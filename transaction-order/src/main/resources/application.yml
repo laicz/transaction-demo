@@ -1,0 +1,10 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: order
+eureka:
+  client:
+    service-url:
+      defaultZone: http://imooc:123456@localhost:8761/eureka
+
