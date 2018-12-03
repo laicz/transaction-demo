@@ -1,0 +1,10 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://imooc:123456@localhost:8761/eureka
+

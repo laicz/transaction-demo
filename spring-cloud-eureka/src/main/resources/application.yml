@@ -1,0 +1,19 @@
+server:
+  port: 8761      #设置服务注册中心端口
+spring:
+  application:
+    name: registry
+
+eureka:
+  client:
+    register-with-eureka: false     #防止向自己注册
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: imooc
+    password: 123456
