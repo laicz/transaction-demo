@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public class DBConfiguration {
 
     @Bean
-    @Primary
+    @Primary        //能够在spring容器中存在多个同类型的时候选择哪个
     @ConfigurationProperties(prefix = "spring.ds_user")
     public DataSourceProperties userDataSourceProperties() {
         return new DataSourceProperties();
@@ -36,7 +36,27 @@ public class DBConfiguration {
         return userDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
+    @Bean
     public JdbcTemplate userJdbcTemplate(@Qualifier("userDataSource") DataSource userDataSource) {
         return new JdbcTemplate(userDataSource);
     }
+
+    @Bean
+//    @Primary
+    @ConfigurationProperties(prefix = "spring.ds_order")
+    public DataSourceProperties orderDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+//    @Primary
+    public DataSource orderDataSource() {
+        return orderDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    }
+
+    @Bean
+    public JdbcTemplate orderJdbcTemplate(@Qualifier("orderDataSource") DataSource orderDataSource) {
+        return new JdbcTemplate(orderDataSource);
+    }
+
 }
