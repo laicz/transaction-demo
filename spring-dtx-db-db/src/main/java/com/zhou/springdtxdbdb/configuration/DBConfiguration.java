@@ -11,7 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -57,6 +60,14 @@ public class DBConfiguration {
     @Bean
     public JdbcTemplate orderJdbcTemplate(@Qualifier("orderDataSource") DataSource orderDataSource) {
         return new JdbcTemplate(orderDataSource);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        DataSourceTransactionManager userTM = new DataSourceTransactionManager(userDataSource());
+        DataSourceTransactionManager orderTM = new DataSourceTransactionManager(orderDataSource());
+        ChainedTransactionManager chainedTransactionManager = new ChainedTransactionManager(userTM, orderTM);
+        return chainedTransactionManager;
     }
 
 }
